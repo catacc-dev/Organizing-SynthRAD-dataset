@@ -1,0 +1,46 @@
+{
+    "001": {
+        "Images": [
+            {
+                "FilePath": "C:\\Users\\catar\\OneDrive - Universidade de Coimbra\\Ambiente de Trabalho\\Master Thesis\\Dataset SynthRAD\\Task1\\pelvis\\1PA001\\ct.nii.gz",
+                "Image Position (Patient)": [
+                    -293.2489929199219,
+                    -121.20001220703125,
+                    -180.0
+                ],
+                "Image Orientation": [
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Modality": "CT"
+            },
+            {
+                "FilePath": "C:\\Users\\catar\\OneDrive - Universidade de Coimbra\\Ambiente de Trabalho\\Master Thesis\\Dataset SynthRAD\\Task1\\pelvis\\1PA001\\mr.nii.gz",
+                "Image Position (Patient)": [
+                    -293.2489929199219,
+                    -121.20001220703125,
+                    -180.0
+                ],
+                "Image Orientation": [
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Modality": "MRI"
+            }
+        ]
+    }
+}
