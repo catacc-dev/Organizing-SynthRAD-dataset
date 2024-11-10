@@ -1,7 +1,4 @@
-# For every image in a single folder
-
 import json
-import os
 from pathlib import Path
 import SimpleITK as sitk
 
@@ -14,13 +11,15 @@ dataset_structure = {}
 
 # Loop through each patient folder in the main directory
 for data_folder in folder.iterdir():
-    #print(data_folder)
-    if data_folder.is_dir() and data_folder.name != "overview":
-        # Extract patient ID from the folder name (last three characters)
+    #print(f"Processing folder: {data_folder.stem}") # - Processing folder: .git (for the first data_folder)
+    if data_folder.is_dir() and data_folder.name != "overview" and not data_folder.stem.startswith("."):
+        # Extract patient ID from the folder name (last three characters) - 1PA001
         patient_id = data_folder.stem[-3:]
-        center = data_folder.stem[-4]
+        center = data_folder.stem[2]
+        unique_key = f"{center}_{patient_id}"
+        print(unique_key)
 
-        dataset_structure[patient_id] = {"Center": center, "Images": []}
+        dataset_structure[unique_key] = {"Center": center, "PatientID": patient_id, "Images": []}
 
         image_paths = filter(lambda f: str(f).endswith("ct.nii.gz") or str(f).endswith("mr.nii.gz"), data_folder.iterdir())
 
@@ -28,44 +27,27 @@ for data_folder in folder.iterdir():
                 # Read the image
                 itk_image = sitk.ReadImage(str(image_path))
 
-                # Check if the image is CT or MRI
-                if "ct" in image_path.stem.lower():
-                        origin_position = itk_image.GetOrigin()
-                        direction_orientation = itk_image.GetDirection()
-                        spacing = itk_image.GetSpacing()
-                        size = itk_image.GetSize()
-                        modality = "CT"
+                # Get image metadata
+                origin_position = itk_image.GetOrigin()
+                direction_orientation = itk_image.GetDirection()
+                spacing = itk_image.GetSpacing()
+                size = itk_image.GetSize()
+                modality = "CT" if "ct" in image_path.stem.lower() else "MRI"
 
-                        # Construct image data dictionary
-                        image_data = {
-                            "Modality": modality,
-                            "FilePath": str(image_path),
-                            "Origin in physical space": origin_position,
-                            "Direction": direction_orientation,
-                            "Image Size": size,
-                            "Physical size of each pixel": spacing,
-                            "Distance between consecutive slices (mm)": spacing[2]
-                        }
-                else:
-                        origin_position = itk_image.GetOrigin()
-                        direction_orientation = itk_image.GetDirection()
-                        spacing = itk_image.GetSpacing()
-                        size = itk_image.GetSize()
-                        modality = "MRI"
-
-                        # Construct image data dictionary
-                        image_data = {
-                            "Modality": modality,
-                            "FilePath": str(image_path),
-                            "Origin in physical space": origin_position,
-                            "Direction": direction_orientation,
-                            "Image Size": size,
-                            "Physical size of each pixel": spacing,
-                            "Distance between consecutive slices (mm)": spacing[2]
-                        }
+                # Construct image data dictionary
+                image_data = {
+                        "Modality": modality,
+                        "FilePath": str(image_path),
+                        "Origin in physical space": origin_position,
+                        "Direction": direction_orientation,
+                        "Image Size": size,
+                        "Physical size of each pixel": spacing,
+                        "Distance between consecutive slices (mm)": spacing[2]
+                }
 
                 # Append the image data to the patient’s images
-                dataset_structure[patient_id]["Images"].append(image_data)
+                dataset_structure[unique_key]["Images"].append(image_data)
+    print(len(dataset_structure))
 
 # Save the structured dataset to a JSON file
 with open(output_json_file, "w") as outfile:
