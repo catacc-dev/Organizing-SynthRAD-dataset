@@ -2,16 +2,17 @@ import os
 import nibabel as nib
 import matplotlib.pyplot as plt
 
-data_path = './1PA001/'
+# Task 1 - Pelvis P - Center A - PatientID 001
+data_path = "C:\\Users\\catar\\OneDrive - Universidade de Coimbra\\Ambiente de Trabalho\\Master Thesis\\Dataset SynthRAD\\Task1\\pelvis\\1PA001"
 type_nifti = os.path.join(data_path, 'ct.nii.gz')
 #type_nifti = os.path.join(data_path, 'mr.nii.gz')
+
 nifti_img = nib.load(type_nifti)
 nii_data = nifti_img.get_fdata()
 nii_aff  = nifti_img.affine
 nii_hdr  = nifti_img.header
-print(f'Position information: \n {nii_hdr.get_best_affine()}\n')
-#print(nii_aff ,'\n',nii_hdr)
-print(nii_data.shape) # 3D matrix (565, 338, 146) - 146 slices with dimension 565x338
+print(nii_aff ,'\n',nii_hdr)
+print(nii_data.shape)
 
 if(len(nii_data.shape)==3):
    for slice_Number in range(nii_data.shape[2]):

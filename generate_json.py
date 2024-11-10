@@ -2,7 +2,6 @@ import json
 from pathlib import Path
 import SimpleITK as sitk
 
-# get list of .nii.gz files inside the given folder
 folder = Path("C:\\Users\\catar\\OneDrive - Universidade de Coimbra\\Ambiente de Trabalho\\Master Thesis\\Dataset SynthRAD\\Task1\\pelvis\\")
 output_json_file = "Task1_pelvis_structure.json"
 
@@ -13,11 +12,10 @@ dataset_structure = {}
 for data_folder in folder.iterdir():
     #print(f"Processing folder: {data_folder.stem}") # - Processing folder: .git (for the first data_folder)
     if data_folder.is_dir() and data_folder.name != "overview" and not data_folder.stem.startswith("."):
-        # Extract patient ID from the folder name (last three characters) - 1PA001
+        # Extract patient ID from the folder name (last three characters)
         patient_id = data_folder.stem[-3:]
         center = data_folder.stem[2]
         unique_key = f"{center}_{patient_id}"
-        print(unique_key)
 
         dataset_structure[unique_key] = {"Center": center, "PatientID": patient_id, "Images": []}
 
@@ -47,7 +45,6 @@ for data_folder in folder.iterdir():
 
                 # Append the image data to the patient’s images
                 dataset_structure[unique_key]["Images"].append(image_data)
-    print(len(dataset_structure))
 
 # Save the structured dataset to a JSON file
 with open(output_json_file, "w") as outfile:
