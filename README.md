@@ -1,5 +1,5 @@
 # Organizing-SynthRAD-dataset
-This project aims to generate a JSON dataset file and access the 2D slices of MRI and CT images.
+This project aims to generate a JSON dataset file and visualize the 2D slices of MRI and CT images.
 The dataset used can be found here: https://zenodo.org/records/7260705.
 
 ## Table of Contents
@@ -21,8 +21,8 @@ pip install -r requirements.txt
 ## Usage
 To run the project, use the following command:
 ```bash
-python generate_json.py
-python load_nifti.py
+python generate_json.py --input_path /folder/of/pelvis
+python load_nifti.py --input_path /folder/of/each/patient --modality ct
 ```
 
 ## Contributing
